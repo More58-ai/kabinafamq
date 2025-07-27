@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Картель KABINA</title>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet" />
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Montserrat', sans-serif;
+      background: radial-gradient(circle at top, #0a0a0a 0%, #1a1a1a 100%);
+      color: #f8f8f8;
+      overflow-x: hidden;
+      line-height: 1.6;
+      position: relative;
+    }
+
+    /* Анімований фон */
+    body::before {
+      content: "";
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background: radial-gradient(circle, rgba(255,0,0,0.12) 10%, transparent 40%),
+                  radial-gradient(circle, rgba(255,255,255,0.05) 10%, transparent 50%);
+      background-size: 300px 300px;
+      background-position: 0 0, 150px 150px;
+      animation: lights 8s infinite alternate;
+      z-index: -1;
+    }
+    @keyframes lights {
+      from { background-position: 0 0, 150px 150px; }
+      to { background-position: 50px 50px, 200px 100px; }
+    }
+
+    /* Банер з анімацією */
+    .banner-container {
+      position: relative;
+      width: 100%;
+      height: 280px;
+      overflow: hidden;
+    }
+    .banner-container img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      filter: brightness(0.8) contrast(1.2);
+    }
+    .banner-overlay {
+      position: absolute;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background: linear-gradient(45deg, rgba(255,0,0,0.3), rgba(0,0,0,0.3));
+      animation: bannerGlow 5s ease-in-out infinite alternate;
+    }
+    @keyframes bannerGlow {
+      from { background: linear-gradient(45deg, rgba(255,0,0,0.4), rgba(0,0,0,0.3)); }
+      to { background: linear-gradient(45deg, rgba(255,50,50,0.6), rgba(0,0,0,0.5)); }
+    }
+
+    h1 {
+      text-align: center;
+      font-size: 3rem;
+      margin: 30px auto 10px;
+      color: #ff3333;
+      text-shadow: 0 0 20px #ff0000, 0 0 40px #990000;
+      animation: glow 4s ease-in-out infinite alternate;
+    }
+    @keyframes glow {
+      from { text-shadow: 0 0 20px #ff0000, 0 0 40px #990000; }
+      to { text-shadow: 0 0 40px #ff4d4d, 0 0 70px #ff0000; }
+    }
+
+    .nav-board {
+      display: flex;
+      justify-content: center;
+      gap: 25px;
+      flex-wrap: wrap;
+      margin: 40px auto;
+      max-width: 1000px;
+    }
+
+    .nav-card {
+      background: rgba(255,0,0,0.05);
+      border-radius: 18px;
+      padding: 10px;
+      backdrop-filter: blur(10px);
+      box-shadow: 0 0 25px rgba(255,0,0,0.4);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+    .nav-card:hover { transform: translateY(-6px) scale(1.05); box-shadow: 0 0 45px rgba(255,50,50,0.7); }
+
+    .nav-button {
+      width: 250px;
+      background: linear-gradient(270deg, #ff0000, #660000, #990000, #ff3333);
+      background-size: 600% 600%;
+      animation: gradientShift 10s ease infinite;
+      border: none; color: #fff;
+      font-weight: 700; font-size: 1.2rem;
+      padding: 18px; cursor: pointer;
+      border-radius: 12px;
+      box-shadow: 0 0 20px rgba(255,0,0,0.4);
+      transition: transform 0.25s, box-shadow 0.3s;
+    }
+    @keyframes gradientShift {
+      0% {background-position:0% 50%;}
+      50% {background-position:100% 50%;}
+      100% {background-position:0% 50%;}
+    }
+    .nav-button:hover { transform: scale(1.1); box-shadow: 0 0 50px rgba(255,0,0,0.9); }
+
+    /* Секції */
+    .section {
+      max-width: 900px; margin: 30px auto; padding: 30px;
+      border-radius: 18px;
+      background: rgba(255,255,255,0.03);
+      backdrop-filter: blur(12px);
+      box-shadow: 0 0 30px rgba(0,0,0,0.5);
+      opacity: 0; transform: scale(0.9) translateY(40px);
+      transition: opacity 1s ease, transform 1s ease;
+    }
+    .section.visible { opacity:1; transform: scale(1) translateY(0); }
+    .section h2 { color: #ff3333; text-shadow: 0 0 10px #ff0000; font-size:1.8rem; margin-bottom:12px; }
+
+    footer {
+      text-align:center;
+      margin:50px 0 20px;
+      font-size:14px;
+      color:#aaa;
+      position:relative;
+    }
+    footer::after {
+      content: "";
+      position: absolute;
+      bottom: -5px; left: 0;
+      width: 100%; height: 2px;
+      background: linear-gradient(90deg, transparent, #ff0000, #ff4d4d, transparent);
+      animation: scanline 3s linear infinite;
+    }
+    @keyframes scanline { 0% {transform: translateX(-100%);} 100% {transform: translateX(100%);} }
+
+    /* Кнопка наверх */
+    #toTop {
+      position:fixed; bottom:30px; right:30px;
+      background:#ff0000; border:none; color:#fff;
+      padding:10px 15px; border-radius:50%; cursor:pointer;
+      font-size:20px; display:none;
+      box-shadow:0 0 15px rgba(255,0,0,0.6);
+    }
+
+    /* Модальне вікно */
+    .modal {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background: rgba(0,0,0,0.8);
+      display: flex; justify-content: center; align-items: center;
+      z-index: 10000;
+      opacity: 0; pointer-events: none;
+      transition: opacity 0.4s ease;
+    }
+    .modal.active {
+      opacity: 1; pointer-events: auto;
+    }
+    .modal-content {
+      background: rgba(30,30,30,0.95);
+      padding: 30px;
+      border-radius: 15px;
+      max-width: 700px;
+      color: #fff;
+      box-shadow: 0 0 40px rgba(255,0,0,0.5);
+      text-align: center;
+      animation: popIn 0.5s ease;
+    }
+    @keyframes popIn {
+      from { transform: scale(0.7); opacity: 0; }
+      to { transform: scale(1); opacity: 1; }
+    }
+    .close-btn {
+      margin-top: 20px;
+      background: #ff0000;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 8px;
+      color: #fff;
+      cursor: pointer;
+      font-size: 1rem;
+      box-shadow: 0 0 20px rgba(255,0,0,0.7);
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Банер -->
+  <div class="banner-container">
+    <img src="https://i.postimg.cc/SsC27pSt/ff16ef9f-c81f-4025-a78d-ce6c851b962b.jpg" alt="KABINA Banner">
+    <div class="banner-overlay"></div>
+  </div>
+
+  <h1>«KABINA»</h1>
+
+  <div class="nav-board">
+    <div class="nav-card">
+      <button class="nav-button" onclick="openTablet('https://example.com/tablet')">
+        📱 Планшет Клану
+      </button>
+    </div>
+    <div class="nav-card">
+      <button class="nav-button" onclick="window.open('https://discord.gg/kzt8egN9','_blank')">
+        💬 Наш Discord
+      </button>
+    </div>
+    <div class="nav-card">
+      <button class="nav-button" onclick="openModal()">
+        📜 Інфо 
+      </button>
+    </div>
+  </div>
+
+  <div class="section">
+    <h2>Хто ми?</h2>
+    <p>«KABINA» — це не просто клан. Ми — тіньова сила, яка контролює території та економіку Еліта РП.  
+       Влада, гроші, вплив і захист — це наша мова. Якщо ти з нами, ти частина імперії.</p>
+  </div>
+  <div class="section">
+    <h2>Планшет Клану</h2>
+    <p>Ми працюємо через <b>офіційний планшет KABINA</b> — головний інструмент для членів.  
+       Тут ведеться облік угод, зв’язок, контроль територій і замовлень.</p>
+  </div>
+
+  <footer>&copy; 2025  KABINA. Всі права не буде захищено.</footer>
+
+  <button id="toTop">↑</button>
+
+  <!-- Модальне вікно -->
+  <div class="modal" id="infoModal">
+    <div class="modal-content">
+      <h2>Про Клан KABINA</h2>
+      <p>Ми — об’єднання сильних гравців, яке контролює ключові процеси у світі Еліта РП.  
+      Наші члени отримують не лише підтримку, а й доступ до ресурсів, територій і угод.  
+      Приєднуйся, якщо готовий грати на рівні великих.</p>
+      <button class="close-btn" onclick="closeModal()">Закрити</button>
+    </div>
+  </div>
+
+  <script>
+    // Плавне відкриття планшета
+    function openTablet(url) {
+      const overlay = document.createElement('div');
+      overlay.style.position = 'fixed';
+      overlay.style.top = '0'; overlay.style.left = '0';
+      overlay.style.width = '100%'; overlay.style.height = '100%';
+      overlay.style.background = 'rgba(0,0,0,0.8)';
+      overlay.style.zIndex = '9999';
+      overlay.style.display = 'flex';
+      overlay.style.alignItems = 'center';
+      overlay.style.justifyContent = 'center';
+      const tablet = document.createElement('div');
+      tablet.style.width = '200px'; tablet.style.height = '120px';
+      tablet.style.border = '3px solid #ff0000';
+      tablet.style.borderRadius = '12px';
+      tablet.style.boxShadow = '0 0 40px #ff0000, 0 0 80px #660000';
+      tablet.style.transition = 'all 0.6s ease';
+      overlay.appendChild(tablet);
+      document.body.appendChild(overlay);
+      setTimeout(() => {
+        tablet.style.width = '90%';
+        tablet.style.height = '90%';
+        tablet.style.opacity = '0';
+      }, 50);
+      setTimeout(() => {
+        document.body.removeChild(overlay);
+        window.open(url, '_blank');
+      }, 700);
+    }
+
+    // Плавні анімації появи блоків
+    const sections = document.querySelectorAll('.section');
+    window.addEventListener('scroll', () => {
+      const trigger = window.innerHeight * 0.8;
+      sections.forEach(sec => {
+        const top = sec.getBoundingClientRect().top;
+        if (top < trigger) sec.classList.add('visible');
+      });
+      document.getElementById('toTop').style.display = window.scrollY > 300 ? 'block' : 'none';
+    });
+
+    document.getElementById('toTop').addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
+
+    // Модальне вікно
+    function openModal() {
+      document.getElementById('infoModal').classList.add('active');
+    }
+    function closeModal() {
+      document.getElementById('infoModal').classList.remove('active');
+    }
+  </script>
+</body>
+</html>
